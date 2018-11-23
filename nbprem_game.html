@@ -17,7 +17,7 @@ var app= (function(){
 	var tabElmGraph=[];
 	return {
 		/* insert l'objet cliquable nombre sur une zone du DOM */
-			donneIndice: function(){
+			proposeNb: function(){
 				var elem= document.createElement("div");
 				var letext= document.createTextNode( (num[indice])? JSON.stringify(num[indice]['name']): "hors indice");
 				elem.appendChild(letext);
@@ -27,27 +27,36 @@ var app= (function(){
 				elem.style.width="100px";
 				zoneGame.appendChild(elem);
 				document.getElementById(indice).addEventListener('click', function(event){
-					// attention bug l indice sort du tableau 
-					alert((num[event.target.id]['isPrime'])?" Premier Perdu!!!" : "Casse !!");
+					 
+					alert((num[event.target.id]['isPrime'])? " Premier Perdu!!!" : "Casse !!");
 					var long = num[event.target.id]['dvser'].length;
 					occ=event.target.id;
 					console.log("long ",long)
+					/* Pour tout les  diviseurs, on créer un objet DOM              */
 					for (var i=0;long >0 && i<long; i++){
+
 							console.log("i  ",i,"****",JSON.stringify(num[occ]['dvser']),"  est un diviseur");
+
 							var elm= document.createElement("div");
-							// Probleme ligne en dessous
-							
-							//var letext= document.createTextNode( num[event.target.id]['dvser'][i]);
-							var ltext= document.createTextNode( JSON.stringify(num[occ]['dvser'][i]));
-							elm.appendChild(ltext);
+
+							// récuperer le ieme diviseur du sous-tableau diviseur 'dvser'
 							var nId=JSON.stringify(num[occ]['dvser'][i]);
+
+							// publier dans la balise div
+							var ltext= document.createTextNode(nId);
+							elm.appendChild(ltext);
+
+							// creer l' id du tag
 							elm.setAttribute("id","chld_"+ nId);
+							// regler les prop CSS
 							elm.setAttribute("style","color:olive");
 							elm.style.position = "absolute";
 							elm.style.left = String((i+1)*50)+"px";
 							
 							elm.style.backgroundColor = "orange";
 							elm.style.width="100px";
+							/* on publie dans la page */
+
 							zoneGame.appendChild(elm);
 							var ref= document.getElementById(nId);
 							/* sauver une réference en tableau */
@@ -66,7 +75,6 @@ var app= (function(){
 									}
 
 
-
 							});
 
 					};
@@ -75,39 +83,15 @@ var app= (function(){
 				// Patch !!
 				if(num[indice + 1]) indice++  ;
 			}
-
-
-
-
-
-
-
 	}
 })();
 bStart= document.getElementById("startBut");
 
 bStart.addEventListener( 'click' , function(){
 	//alert("button clické !");
-	app.donneIndice();
+	app.proposeNb();
 });
-/*
-// on veut faire apparaitre Un rectangle tout les 2 secondes
-
-function donneNum(){
-	var indice=0;
-
-	var num= Array({ '12':[3,4]},{'21':[]},{'25':[5,5]});
-		function donne (ind){
-			console.log (typeof ind);
-				return num.toString();
-		};
-		donne(indice);
-
-};
-alert(donneNum());
-*/
 
 </script>
-
 </body>
 </html>

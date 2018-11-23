@@ -1,0 +1,113 @@
+<html>
+
+<body>
+	<h1>Vive les PRIMES</h1>
+<h2> Casse les nombres divisibles ! Tu perds de l'energie à vouloir casser des Premiers</h2>
+<div><button id="startBut">Jouer </button></div>
+<div id="zonegame">Zone Game></div>	
+<script>
+
+var zoneGame= document.getElementById("zonegame");
+/* Une Classe app */
+var app= (function(){
+	var indice =0;
+	var num= Array({ 'name':'12','dvser': [3,4],'isPrime':false},
+					{'name':'23','dvser':[],'isPrime':true},
+					{'name':'25','dvser':[5,5],'isPrime':false});
+	var tabElmGraph=[];
+	return {
+		/* insert l'objet cliquable nombre sur une zone du DOM */
+			donneIndice: function(){
+				var elem= document.createElement("div");
+				var letext= document.createTextNode( (num[indice])? JSON.stringify(num[indice]['name']): "hors indice");
+				elem.appendChild(letext);
+				elem.setAttribute("id",indice);
+				elem.setAttribute("style","color:blue");
+				elem.style.backgroundColor = "red";
+				elem.style.width="100px";
+				zoneGame.appendChild(elem);
+				document.getElementById(indice).addEventListener('click', function(event){
+					// attention bug l indice sort du tableau 
+					alert((num[event.target.id]['isPrime'])?" Premier Perdu!!!" : "Casse !!");
+					var long = num[event.target.id]['dvser'].length;
+					occ=event.target.id;
+					console.log("long ",long)
+					for (var i=0;long >0 && i<long; i++){
+							console.log("i  ",i,"****",JSON.stringify(num[occ]['dvser']),"  est un diviseur");
+							var elm= document.createElement("div");
+							// Probleme ligne en dessous
+							
+							//var letext= document.createTextNode( num[event.target.id]['dvser'][i]);
+							var ltext= document.createTextNode( JSON.stringify(num[occ]['dvser'][i]));
+							elm.appendChild(ltext);
+							var nId=JSON.stringify(num[occ]['dvser'][i]);
+							elm.setAttribute("id","chld_"+ nId);
+							elm.setAttribute("style","color:olive");
+							elm.style.position = "absolute";
+							elm.style.left = String((i+1)*50)+"px";
+							
+							elm.style.backgroundColor = "orange";
+							elm.style.width="100px";
+							zoneGame.appendChild(elm);
+							var ref= document.getElementById(nId);
+							/* sauver une réference en tableau */
+							tabElmGraph.push(ref);
+							/* faire avancer l'objet créer   PROMISE des que l'objet atteint une limite d'altitude */
+							var pro1= new Promise(function(resolve,reject){
+									let y=0;
+									let limiteAlt=300;
+									let refer= tabElmGraph[ tabElmGraph.length-1] ;
+									while(y<300){
+										/* a completer*/
+										//console.log(refer.style.top)
+
+										y++;
+										if( y== limiteAlt) {resolve()};
+									}
+
+
+
+							});
+
+					};
+
+					});
+				// Patch !!
+				if(num[indice + 1]) indice++  ;
+			}
+
+
+
+
+
+
+
+	}
+})();
+bStart= document.getElementById("startBut");
+
+bStart.addEventListener( 'click' , function(){
+	//alert("button clické !");
+	app.donneIndice();
+});
+/*
+// on veut faire apparaitre Un rectangle tout les 2 secondes
+
+function donneNum(){
+	var indice=0;
+
+	var num= Array({ '12':[3,4]},{'21':[]},{'25':[5,5]});
+		function donne (ind){
+			console.log (typeof ind);
+				return num.toString();
+		};
+		donne(indice);
+
+};
+alert(donneNum());
+*/
+
+</script>
+
+</body>
+</html>
